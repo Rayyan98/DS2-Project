@@ -12,6 +12,7 @@ from stopwatch import Stopwatch
 
 # Algorithm imports
 from Collision_detection_Array import Collision_detection_Array
+from SpatialHashing import Collision_Detection_Spatial_hashing
 
 
 FPS = 20
@@ -32,13 +33,18 @@ for i in range(100):
 	r.append(MyRectangle(random.randint(0, MyScreen.width - 40), random.randint(0, MyScreen.height - 40), l, l, vx , vy))
 
 
-screen = pygame.display.set_mode((int(MyScreen.width * 1.4), MyScreen.height))
+screen = pygame.display.set_mode((int(MyScreen.width * 1.5), MyScreen.height))
 clock = pygame.time.Clock()
 
 
 arrayDetection = Collision_detection_Array()
 arrayStop = Stopwatch()
 arrayLabel = myfont.render("Array based", False, MyColor.white)
+
+hashDetection = Collision_Detection_Spatial_hashing()
+hashStop = Stopwatch()
+hashLabel = myfont.render("Hash based", False, MyColor.white)
+
 
 loop = True
 
@@ -73,8 +79,21 @@ while loop:
 	arrayStop.start()
 	arrayResult = arrayDetection.CheckCollisions(r)
 	arrayStop.stop()
-	arrayTime = myfont.render(str(arrayStop.time_elapsed())  + ' ms', False, MyColor.white)
+	arrayTimeNum = arrayStop.time_elapsed()
+	arrayTime = myfont.render(str(arrayTimeNum)  + ' ms', False, MyColor.white)
 	arrayStop.reset()
+
+	hashStop.start()
+	hashResult = hashDetection.CheckCollisions(r)
+	hashStop.stop()
+	hashTimeNum = hashStop.time_elapsed()
+	hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(arrayTimeNum//hashTimeNum) + " Times Faster", False, MyColor.white)
+	hashStop.reset()
+
+	# if not arrayResult == hashResult:
+		# print( "fail ")
+		# print(arrayResult)
+		# print(hashResult)
 
 	screen.fill((MyColor.black))
 	
@@ -83,6 +102,8 @@ while loop:
 
 	screen.blit(arrayLabel,(MyScreen.width * 1.05, 0))
 	screen.blit(arrayTime,(MyScreen.width * 1.05, 30))
+	screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
+	screen.blit(hashTime,(MyScreen.width * 1.05, 90))
 
 	pygame.display.flip()
 	

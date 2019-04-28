@@ -8,6 +8,6 @@ class Collision_detection_Array(Collision_Detection):
 		for i in range(len(rects)):
 			for j in range(i + 1, len(rects)):
 				if self.takra(rects[i], rects[j]):
-					collision.add(frozenset([i,j]))
+					collision.add(frozenset([rects[i],rects[j]]))
 		return collision
 		

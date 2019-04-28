@@ -1,26 +1,41 @@
 from Collision_detection import Collision_Detection
 from MyScreen import MyScreen 
 
-class Collision_Detection_Spatial_hashing(collision_Detection):
-    def __init__(rects):
-        self.Xboxes = int(MyScreen.width/100)
-        self.Yboxes = int(MyScreen.height/100)
+class Collision_Detection_Spatial_hashing(Collision_Detection):
+    def __init__(self):
+        self.Xboxes = MyScreen.width//100
+        self.Yboxes = MyScreen.height//100
 
-    def Hash(x,y):
+    def Hash(self, x,y):
         X = x//100
         Y = y//100
 
-        h = X + Y*self.Xboxes
+        h = X + Y * self.Xboxes
         return h
         
         
     def BroadPhase(self,rects):
         self.lst = [set() for i in range(self.Xboxes * self.Yboxes)]
         for r in rects:
-            self.lst[Hash(r.x,r.y)].add(r)
-            self.lst[Hash(r.x + r.w,r.y)].add(r)
-            self.lst[Hash(r.x,r.y + r.h)].add(r)
-            self.lst[Hash(r.x + r.w,r.y + r.h)].add(r)
+            self.lst[self.Hash(r.x, r.y)].add(r)
+            try:
+                self.lst[self.Hash(r.x + r.w, r.y)].add(r)
+            except:
+                self.lst[self.Hash(r.x + r.w - 1, r.y)].add(r)
+            try:
+                self.lst[self.Hash(r.x, r.y + r.h)].add(r)
+            except:
+                self.lst[self.Hash(r.x, r.y + r.h - 1)].add(r)
+            try:
+                self.lst[self.Hash(r.x + r.w, r.y + r.h)].add(r)
+            except:
+                try:
+                    self.lst[self.Hash(r.x + r.w - 1, r.y + r.h)].add(r)
+                except:
+                    try:
+                        self.lst[self.Hash(r.x + r.w , r.y + r.h - 1)].add(r)
+                    except:
+                        self.lst[self.Hash(r.x + r.w - 1, r.y + r.h - 1)].add(r)
 
 
     def CheckCollisions(self, rects):
@@ -31,7 +46,7 @@ class Collision_Detection_Spatial_hashing(collision_Detection):
                 p = i.pop()
                 for j in i:
                     if self.takra(p,j) == True:
-                        S.add(frozenset([p,j])
+                        S.add(frozenset([p,j]))
         return S
 
 
