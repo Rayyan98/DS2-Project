@@ -15,6 +15,16 @@ from Collision_detection_Array import Collision_detection_Array
 from SpatialHashing import Collision_Detection_Spatial_hashing
 
 
+def GetRandomRects(n):
+	r = []
+	for i in range(n):
+		l= random.randint(10,40)
+		vx = random.randint(3, 10)
+		vy = random.randint(3, 10)
+		r.append(MyRectangle(random.randint(0, MyScreen.width - 40), random.randint(0, MyScreen.height - 40), l, l, vx , vy))
+	return r
+
+
 FPS = 20
 MyScreen.width = 900
 MyScreen.height = 600
@@ -23,14 +33,6 @@ MyScreen.height = 600
 pygame.init()
 pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
-
-
-r = []
-for i in range(100):
-	l= random.randint(10,40)
-	vx = random.randint(3, 10)
-	vy = random.randint(3, 10)
-	r.append(MyRectangle(random.randint(0, MyScreen.width - 40), random.randint(0, MyScreen.height - 40), l, l, vx , vy))
 
 
 screen = pygame.display.set_mode((int(MyScreen.width * 1.5), MyScreen.height))
@@ -48,6 +50,8 @@ hashLabel = myfont.render("Hash based", False, MyColor.white)
 
 loop = True
 
+
+r = GetRandomRects(100)
 
 while loop:
 	a = pygame.time.get_ticks()
@@ -87,7 +91,7 @@ while loop:
 	hashResult = hashDetection.CheckCollisions(r)
 	hashStop.stop()
 	hashTimeNum = hashStop.time_elapsed()
-	hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(arrayTimeNum//hashTimeNum) + " Times Faster", False, MyColor.white)
+	hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(arrayTimeNum//max(hashTimeNum, 1)) + " Times Faster", False, MyColor.white)
 	hashStop.reset()
 
 	# if not arrayResult == hashResult:
