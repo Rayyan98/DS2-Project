@@ -35,7 +35,7 @@ pygame.font.init()
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
-screen = pygame.display.set_mode((int(MyScreen.width * 1.5), MyScreen.height))
+screen = pygame.display.set_mode((int(MyScreen.width * 1.45), MyScreen.height))
 clock = pygame.time.Clock()
 
 
