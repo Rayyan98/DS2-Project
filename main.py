@@ -14,7 +14,7 @@ from stopwatch import Stopwatch
 from Collision_detection_Array import Collision_detection_Array
 from SpatialHashing import Collision_Detection_Spatial_hashing
 from Skiplist import Collision_Detection_SkipList
-
+from QuadTree import Collision_Detection_Quad_Tree
 
 def GetRandomRects(n):
 	r = []
@@ -51,6 +51,10 @@ hashLabel = myfont.render("Hash based", False, MyColor.white)
 skipDetection = Collision_Detection_SkipList()
 skipStop = Stopwatch()
 skipLabel = myfont.render("Skiplist based", False, MyColor.white)
+
+quadDetection = Collision_Detection_Quad_Tree()
+quadStop = Stopwatch()
+quadLabel = myfont.render("QuadTree based", False, MyColor.white)
 
 
 loop = True
@@ -105,11 +109,20 @@ while loop:
         skipTimeNum = skipStop.time_elapsed()
         skipTime = myfont.render(str(skipTimeNum) + ' ms  ~' + str(arrayTimeNum//max(skipTimeNum, 1)) + " Times Faster", False, MyColor.white)
         skipStop.reset()
+
+        quadStop.start()
+        quadResult = quadDetection.CheckCollisions(r)
+        quadStop.stop()
+        quadTimeNum = quadStop.time_elapsed()
+        quadTime = myfont.render(str(quadTimeNum) + ' ms  ~' + str(arrayTimeNum//max(quadTimeNum, 1)) + " Times Faster", False, MyColor.white)
+        quadStop.reset()
+
         if not arrayResult == skipResult:
-                print("fail ")
-                #print(arrayResult)
-		#print(hashResult)
-                #print(skipResult)
+                print("fail skip")
+        if not arrayResult == hashResult:
+                print("fail hash")
+        if not arrayResult == quadResult:
+                print("fail quad")
 
 		 
 
@@ -120,10 +133,12 @@ while loop:
 
         screen.blit(arrayLabel,(MyScreen.width * 1.05, 0))
         screen.blit(arrayTime,(MyScreen.width * 1.05, 30))
-        screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
-        screen.blit(hashTime,(MyScreen.width * 1.05, 90))
+        screen.blit(quadLabel,(MyScreen.width * 1.05, 180))
+        screen.blit(quadTime,(MyScreen.width * 1.05, 210))
         screen.blit(skipLabel,(MyScreen.width * 1.05, 120))
         screen.blit(skipTime,(MyScreen.width * 1.05, 150))
+        screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
+        screen.blit(hashTime,(MyScreen.width * 1.05, 90))
 
         pygame.display.flip()
 
