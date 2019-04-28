@@ -1,7 +1,7 @@
 # Bigger imports
 import pygame
 import random
-
+import math
 
 # Smaller imports
 from MyRectangle import MyRectangle
@@ -15,6 +15,8 @@ from Collision_detection_Array import Collision_detection_Array
 from SpatialHashing import Collision_Detection_Spatial_hashing
 from Skiplist import Collision_Detection_SkipList
 from QuadTree import Collision_Detection_Quad_Tree
+from BinaryTree import Collision_Detection_Binary_Tree
+from AABBTrees import Collision_detection_AABB
 
 def GetRandomRects(n):
 	r = []
@@ -56,11 +58,19 @@ quadDetection = Collision_Detection_Quad_Tree()
 quadStop = Stopwatch()
 quadLabel = myfont.render("QuadTree based", False, MyColor.white)
 
+aabbDetection = Collision_detection_AABB()
+aabbStop = Stopwatch()
+aabbLabel = myfont.render("AABBTree based", False, MyColor.white)
+
+binDetection = Collision_Detection_Binary_Tree()
+binStop = Stopwatch()
+binLabel = myfont.render("BinaryTree based", False, MyColor.white)
+
 
 loop = True
 
 
-r = GetRandomRects(300)
+r = GetRandomRects(450)
 
 while loop:
         a = pygame.time.get_ticks()
@@ -100,22 +110,29 @@ while loop:
         hashResult = hashDetection.CheckCollisions(r)
         hashStop.stop()
         hashTimeNum = hashStop.time_elapsed()
-        hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(arrayTimeNum//max(hashTimeNum, 1)) + " Times Faster", False, MyColor.white)
+        hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(hashTimeNum, 1))) + " Times Faster", False, MyColor.white)
         hashStop.reset()
 
         skipStop.start()
         skipResult = skipDetection.CheckCollisions(r)
         skipStop.stop()
         skipTimeNum = skipStop.time_elapsed()
-        skipTime = myfont.render(str(skipTimeNum) + ' ms  ~' + str(arrayTimeNum//max(skipTimeNum, 1)) + " Times Faster", False, MyColor.white)
+        skipTime = myfont.render(str(skipTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(skipTimeNum, 1))) + " Times Faster", False, MyColor.white)
         skipStop.reset()
 
         quadStop.start()
         quadResult = quadDetection.CheckCollisions(r)
         quadStop.stop()
         quadTimeNum = quadStop.time_elapsed()
-        quadTime = myfont.render(str(quadTimeNum) + ' ms  ~' + str(arrayTimeNum//max(quadTimeNum, 1)) + " Times Faster", False, MyColor.white)
+        quadTime = myfont.render(str(quadTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(quadTimeNum, 1))) + " Times Faster", False, MyColor.white)
         quadStop.reset()
+
+        binStop.start()
+        binResult = binDetection.CheckCollisions(r)
+        binStop.stop()
+        binTimeNum = binStop.time_elapsed()
+        binTime = myfont.render(str(binTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(binTimeNum, 1))) + " Times Faster", False, MyColor.white)
+        binStop.reset()
 
         if not arrayResult == skipResult:
                 print("fail skip")
@@ -123,6 +140,8 @@ while loop:
                 print("fail hash")
         if not arrayResult == quadResult:
                 print("fail quad")
+        if not arrayResult == binResult:
+                print("fail aabb")
 
 		 
 
@@ -139,6 +158,19 @@ while loop:
         screen.blit(skipTime,(MyScreen.width * 1.05, 150))
         screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
         screen.blit(hashTime,(MyScreen.width * 1.05, 90))
+        screen.blit(binLabel,(MyScreen.width * 1.05, 240))
+        screen.blit(binTime,(MyScreen.width * 1.05, 270))
+
+        aabbStop.start()
+        aabbResult = aabbDetection.CheckCollisions(r)
+        aabbStop.stop()
+        aabbTimeNum = aabbStop.time_elapsed()
+        aabbTime = myfont.render(str(aabbTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum//max(aabbTimeNum, 1))) + " Times Faster", False, MyColor.white)
+        aabbStop.reset()
+        screen.blit(aabbLabel,(MyScreen.width * 1.05, 300))
+        screen.blit(aabbTime,(MyScreen.width * 1.05, 330))
+
+
 
         pygame.display.flip()
 
