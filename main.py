@@ -70,7 +70,7 @@ binLabel = myfont.render("BinaryTree based", False, MyColor.white)
 loop = True
 
 
-r = GetRandomRects(450)
+r = GetRandomRects(300)
 
 while loop:
         a = pygame.time.get_ticks()
@@ -140,6 +140,7 @@ while loop:
                 print("fail hash")
         if not arrayResult == quadResult:
                 print("fail quad")
+                print(quadResult)
         if not arrayResult == binResult:
                 print("fail aabb")
 
@@ -161,14 +162,14 @@ while loop:
         screen.blit(binLabel,(MyScreen.width * 1.05, 240))
         screen.blit(binTime,(MyScreen.width * 1.05, 270))
 
-        aabbStop.start()
-        aabbResult = aabbDetection.CheckCollisions(r)
-        aabbStop.stop()
-        aabbTimeNum = aabbStop.time_elapsed()
-        aabbTime = myfont.render(str(aabbTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum//max(aabbTimeNum, 1))) + " Times Faster", False, MyColor.white)
-        aabbStop.reset()
-        screen.blit(aabbLabel,(MyScreen.width * 1.05, 300))
-        screen.blit(aabbTime,(MyScreen.width * 1.05, 330))
+        # aabbStop.start()
+        # aabbResult = aabbDetection.CheckCollisions(r)
+        # aabbStop.stop()
+        # aabbTimeNum = aabbStop.time_elapsed()
+        # aabbTime = myfont.render(str(aabbTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum//max(aabbTimeNum, 1))) + " Times Faster", False, MyColor.white)
+        # aabbStop.reset()
+        # screen.blit(aabbLabel,(MyScreen.width * 1.05, 300))
+        # screen.blit(aabbTime,(MyScreen.width * 1.05, 330))
 
 
 
