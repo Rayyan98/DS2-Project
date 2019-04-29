@@ -99,12 +99,21 @@ while loop:
         for i in r:
                 i.Move()
 
+
+
+        screen.fill((MyColor.black))
+
+        for i in r:
+                pygame.draw.rect(screen, (255,255,255), i.GetBounds(), 0)
+
         arrayStop.start()
         arrayResult = arrayDetection.CheckCollisions(r)
         arrayStop.stop()
         arrayTimeNum = arrayStop.time_elapsed()
         arrayTime = myfont.render(str(arrayTimeNum)  + ' ms', False, MyColor.white)
         arrayStop.reset()
+        screen.blit(arrayLabel,(MyScreen.width * 1.05, 0))
+        screen.blit(arrayTime,(MyScreen.width * 1.05, 30))
 
         hashStop.start()
         hashResult = hashDetection.CheckCollisions(r)
@@ -112,6 +121,8 @@ while loop:
         hashTimeNum = hashStop.time_elapsed()
         hashTime = myfont.render(str(hashTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(hashTimeNum, 1))) + " Times Faster", False, MyColor.white)
         hashStop.reset()
+        screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
+        screen.blit(hashTime,(MyScreen.width * 1.05, 90))
 
         skipStop.start()
         skipResult = skipDetection.CheckCollisions(r)
@@ -119,6 +130,8 @@ while loop:
         skipTimeNum = skipStop.time_elapsed()
         skipTime = myfont.render(str(skipTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(skipTimeNum, 1))) + " Times Faster", False, MyColor.white)
         skipStop.reset()
+        screen.blit(skipLabel,(MyScreen.width * 1.05, 120))
+        screen.blit(skipTime,(MyScreen.width * 1.05, 150))
 
         quadStop.start()
         quadResult = quadDetection.CheckCollisions(r)
@@ -126,6 +139,8 @@ while loop:
         quadTimeNum = quadStop.time_elapsed()
         quadTime = myfont.render(str(quadTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(quadTimeNum, 1))) + " Times Faster", False, MyColor.white)
         quadStop.reset()
+        screen.blit(quadLabel,(MyScreen.width * 1.05, 180))
+        screen.blit(quadTime,(MyScreen.width * 1.05, 210))
 
         binStop.start()
         binResult = binDetection.CheckCollisions(r)
@@ -133,34 +148,9 @@ while loop:
         binTimeNum = binStop.time_elapsed()
         binTime = myfont.render(str(binTimeNum) + ' ms  ~' + str(math.ceil(arrayTimeNum/max(binTimeNum, 1))) + " Times Faster", False, MyColor.white)
         binStop.reset()
-
-        if not arrayResult == skipResult:
-                print("fail skip")
-        if not arrayResult == hashResult:
-                print("fail hash")
-        if not arrayResult == quadResult:
-                print("fail quad")
-                print(quadResult)
-        if not arrayResult == binResult:
-                print("fail aabb")
-
-		 
-
-        screen.fill((MyColor.black))
-
-        for i in r:
-                pygame.draw.rect(screen, (255,255,255), i.GetBounds(), 0)
-
-        screen.blit(arrayLabel,(MyScreen.width * 1.05, 0))
-        screen.blit(arrayTime,(MyScreen.width * 1.05, 30))
-        screen.blit(quadLabel,(MyScreen.width * 1.05, 180))
-        screen.blit(quadTime,(MyScreen.width * 1.05, 210))
-        screen.blit(skipLabel,(MyScreen.width * 1.05, 120))
-        screen.blit(skipTime,(MyScreen.width * 1.05, 150))
-        screen.blit(hashLabel,(MyScreen.width * 1.05, 60))
-        screen.blit(hashTime,(MyScreen.width * 1.05, 90))
         screen.blit(binLabel,(MyScreen.width * 1.05, 240))
         screen.blit(binTime,(MyScreen.width * 1.05, 270))
+
 
         # aabbStop.start()
         # aabbResult = aabbDetection.CheckCollisions(r)
@@ -173,6 +163,17 @@ while loop:
 
 
 
+        if not arrayResult == skipResult:
+                print("fail skip")
+        if not arrayResult == hashResult:
+                print("fail hash")
+        if not arrayResult == quadResult:
+                print("fail quad")
+                print(quadResult)
+        if not arrayResult == binResult:
+                print("fail aabb")
+
+		 
         pygame.display.flip()
 
         clock.tick(FPS)
